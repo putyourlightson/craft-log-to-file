@@ -34,7 +34,7 @@ LogToFile::log($message, 'my-plugin-handle', 'custom-category');
 
 The result is a concise log file that contains messages relevant to your module/plugin only.
 
-`my-plugin-handle.log`
+### File: `my-plugin-handle.log`
 
 ```
 2019-03-27 09:47:14 [info] Notification email sent to user #34.

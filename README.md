@@ -32,6 +32,17 @@ LogToFile::error($message, 'my-plugin-handle');
 LogToFile::log($message, 'my-plugin-handle', 'custom-category');
 ```
 
+The result is a concise log file that contains messages relevant to your module/plugin only.
+
+`my-plugin-handle.log`
+
+```
+2019-03-27 09:47:14 [info] Notification email sent to user #34.
+2019-03-27 17:53:45 [info] Notification email sent to user #56.
+2019-03-27 19:45:52 [error] Template `notification` not found.
+2019-03-27 19:56:13 [debug] Template `notification` could not be rendered.
+```
+
 ## License
 
 This module is licensed for free under the MIT License.

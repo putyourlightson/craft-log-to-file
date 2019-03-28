@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ComposerJsonPluginSettings">
+    <unboundedVersionInspectionSettings>
+      <excludedPackages />
+    </unboundedVersionInspectionSettings>
+    <customRepositories />
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>AngularJS</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="VagrantSettings">
+    <option name="instanceFolder" value="" />
+    <option name="provider" value="" />
+    <option name="vagrantExecutable" value="vagrant" />
+  </component>
+</project>

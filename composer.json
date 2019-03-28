@@ -1,0 +1,34 @@
+{
+    "name": "putyourlightson/craft-log-to-file",
+    "description": "Element status events extension for Craft CMS.",
+    "version": "0.0.1",
+    "type": "yii2-extension",
+    "homepage": "https://github.com/putyourlightson/craft-log-to-file",
+    "license": "MIT",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "log",
+        "file",
+        "plugin"
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "putyourlightson\\logtofile\\": "src/"
+        }
+    },
+    "support": {
+        "docs": "https://github.com/putyourlightson/craft-log-to-file",
+        "source": "https://github.com/putyourlightson/craft-log-to-file",
+        "issues": "https://github.com/putyourlightson/craft-log-to-file/issues"
+    },
+    "extra": {
+        "bootstrap": "putyourlightson\\logtofile\\LogToFile",
+        "developer": "PutYourLightsOn",
+        "developerUrl": "https://putyourlightson.com/"
+    }
+}

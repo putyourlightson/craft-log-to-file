@@ -3,35 +3,72 @@
 namespace putyourlightson\logtofile;
 
 use Craft;
-use craft\web\Application as CraftWebApp;
-use craft\console\Application as CraftConsoleApp;
-use putyourlightson\elementstatusevents\commands\ScheduledElements;
-use yii\base\Application as YiiApp;
-use yii\base\BootstrapInterface;
+use craft\helpers\FileHelper;
 use yii\base\Component;
-use craft\base\Element;
-use craft\events\ElementEvent;
-use craft\services\Elements;
-use putyourlightson\elementstatusevents\behaviors\ElementStatusBehavior;
-use yii\base\Event;
-use yii\caching\CacheInterface;
+use yii\base\ErrorException;
 
 class LogToFile extends Component
 {
-    // Public Methods
+    // Static Properties
     // =========================================================================
 
     /**
-     * Logs the message.
+     * @var string
+     */
+    public static $handle = '';
+
+    // Static Methods
+    // =========================================================================
+
+    /**
+     * Logs an info message to a file with the provided handle.
      *
      * @param string $message
-     * @param string $handle
+     * @param string $handle|null
      */
-    public static function log(string $message, string $handle)
+    public static function info(string $message, string $handle = null)
     {
-        $file = Craft::getAlias('@storage/logs/'.$handle.'.log');
-        $log = date('Y-m-d H:i:s').' '.$message."\n";
+        self::log($message, $handle, 'info');
+    }
 
-        \craft\helpers\FileHelper::writeToFile($file, $log, ['append' => true]);
+    /**
+     * Logs an error message to a file with the provided handle.
+     *
+     * @param string $message
+     * @param string $handle|null
+     */
+    public static function error(string $message, string $handle = null)
+    {
+        self::log($message, $handle, 'error');
+    }
+
+    /**
+     * Logs the message to a file with the provided handle and category.
+     *
+     * @param string $message
+     * @param string $handle|null
+     * @param string $category
+     */
+    public static function log(string $message, string $handle = null, string $category = 'info')
+    {
+        // Default to class handle if none provided
+        if (empty($handle)) {
+            $handle = self::$handle;
+        }
+
+        // Don't continue if handle is still empty
+        if (empty($handle)) {
+            return;
+        }
+
+        $file = Craft::getAlias('@storage/logs/'.$handle.'.log');
+
+        $log = date('Y-m-d H:i:s').' ['.$category.'] '.$message."\n";
+
+        try {
+            FileHelper::writeToFile($file, $log, ['append' => true]);
+        }
+        catch (ErrorException $e) {
+        }
     }
 }

@@ -8,9 +8,18 @@ This component requires Craft CMS 3.0.0 or later.
 
 ## Usage
 
-Install it manually using composer or add it as a dependency to your plugin.
+Install it manually using composer:
+
 ```
 composer require putyourlightson/craft-log-to-file
+```
+
+Or add it as a dependency to your plugin:
+
+```
+"require": {
+    "putyourlightson/craft-log-to-file": "^1.0.0"
+},
 ```
 Then you can write messages to a log file as follows.
 

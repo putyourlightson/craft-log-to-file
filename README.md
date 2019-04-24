@@ -1,6 +1,6 @@
-# Log To File Extension for Craft CMS 3
+# Log To File Helper for Craft CMS 3
 
-The Log To File extension provides a simple way for logging messages to a specific file. It is intended to be used a helper component for modules and plugins in [Craft CMS](https://craftcms.com/).
+The Log To File helper provides a simple way for logging messages to a specific file. It is intended to be used a helper class for modules and plugins in [Craft CMS](https://craftcms.com/).
 
 ## Requirements
 
@@ -37,10 +37,10 @@ The result is a concise log file that contains messages relevant to your module/
 ### File: `my-plugin-handle.log`
 
 ```
-2019-03-27 09:47:14 [info] Notification email sent to user #34.
-2019-03-27 17:53:45 [info] Notification email sent to user #56.
-2019-03-27 19:45:52 [error] Template `notification` not found.
-2019-03-27 19:56:13 [debug] Template `notification` could not be rendered.
+2019-04-24 09:47:14 [info] Notification email sent to user #34.
+2019-04-24 17:53:45 [info] Notification email sent to user #56.
+2019-04-24 19:45:52 [error] Template `notification` not found.
+2019-04-24 19:56:13 [debug] Template `notification` could not be rendered.
 ```
 
 ## License

@@ -4,10 +4,9 @@ namespace putyourlightson\logtofile;
 
 use Craft;
 use craft\helpers\FileHelper;
-use yii\base\Component;
 use yii\base\ErrorException;
 
-class LogToFile extends Component
+class LogToFile
 {
     // Static Properties
     // =========================================================================
@@ -17,6 +16,16 @@ class LogToFile extends Component
      */
     public static $handle = '';
 
+    /**
+     * @var bool
+     */
+    public static $logUserIp = false;
+
+    /**
+     * @var bool
+     */
+    public static $logToCraft = false;
+
     // Static Methods
     // =========================================================================
 
@@ -24,7 +33,7 @@ class LogToFile extends Component
      * Logs an info message to a file with the provided handle.
      *
      * @param string $message
-     * @param string $handle|null
+     * @param string|null $handle
      */
     public static function info(string $message, string $handle = null)
     {
@@ -35,7 +44,7 @@ class LogToFile extends Component
      * Logs an error message to a file with the provided handle.
      *
      * @param string $message
-     * @param string $handle|null
+     * @param string|null $handle
      */
     public static function error(string $message, string $handle = null)
     {
@@ -43,16 +52,16 @@ class LogToFile extends Component
     }
 
     /**
-     * Logs the message to a file with the provided handle and category.
+     * Logs the message to a file with the provided handle and level.
      *
      * @param string $message
-     * @param string $handle|null
-     * @param string $category
+     * @param string|null $handle
+     * @param string $level
      */
-    public static function log(string $message, string $handle = null, string $category = 'info')
+    public static function log(string $message, string $handle = null, string $level = 'info')
     {
-        // Default to class handle if none provided
-        if (empty($handle)) {
+        // Default to class value if none provided
+        if ($handle === null) {
             $handle = self::$handle;
         }
 
@@ -63,12 +72,32 @@ class LogToFile extends Component
 
         $file = Craft::getAlias('@storage/logs/'.$handle.'.log');
 
-        $log = date('Y-m-d H:i:s').' ['.$category.'] '.$message."\n";
+        // Set user ID
+        $userId = '';
+        $user = Craft::$app->getUser()->getIdentity();
+
+        if ($user !== null) {
+            $userId = $user->id;
+        }
+
+        // Set IP address
+        $ip = '';
+
+        if (self::$logUserIp) {
+            $ip = Craft::$app->getRequest()->getUserIP();
+        }
+
+        $log = date('Y-m-d H:i:s').' ['.$ip.']['.$userId.']['.$level.'] '.$message."\n";
 
         try {
             FileHelper::writeToFile($file, $log, ['append' => true]);
         }
         catch (ErrorException $e) {
+            Craft::warning('Failed to write log to file `'.$file.'`.');
+        }
+
+        if (self::$logToCraft) {
+            Craft::getLogger()->log($message, $level, $handle);
         }
     }
 }

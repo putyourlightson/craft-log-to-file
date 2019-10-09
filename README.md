@@ -54,6 +54,6 @@ The result is a concise log file that contains messages relevant to your module/
 
 ## License
 
-This module is licensed for free under the MIT License.
+This software is licensed for free under the MIT License.
 
 <small>Created by [PutYourLightsOn](https://putyourlightson.com/).</small>

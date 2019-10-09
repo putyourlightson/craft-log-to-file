@@ -1,8 +1,7 @@
 {
     "name": "putyourlightson/craft-log-to-file",
     "description": "Logs messages to a specific log file for Craft CMS.",
-    "version": "1.0.0",
-    "type": "package",
+    "version": "1.0.1",
     "homepage": "https://github.com/putyourlightson/craft-log-to-file",
     "license": "MIT",
     "keywords": [
@@ -31,6 +30,7 @@
         "name": "Log To File",
         "developer": "PutYourLightsOn",
         "developerUrl": "https://putyourlightson.com/",
+        "documentationUrl": "https://github.com/putyourlightson/craft-log-to-file",
         "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-log-to-file/v1/CHANGELOG.md"
     }
 }

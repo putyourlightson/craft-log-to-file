@@ -87,6 +87,9 @@ class LogToFile
             $ip = Craft::$app->getRequest()->getUserIP();
         }
 
+        // Trim message to remove whitespace and empty lines
+        $message = trim($message);
+
         $log = date('Y-m-d H:i:s').' ['.$ip.']['.$userId.']['.$level.'] '.$message."\n";
 
         try {

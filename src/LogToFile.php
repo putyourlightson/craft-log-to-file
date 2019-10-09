@@ -5,9 +5,26 @@ namespace putyourlightson\logtofile;
 use Craft;
 use craft\helpers\FileHelper;
 use yii\base\ErrorException;
+use yii\log\Logger;
 
 class LogToFile
 {
+    // Constants
+    // =========================================================================
+
+    /**
+     * Message levels
+     * @see https://www.yiiframework.com/doc/api/2.0/yii-log-logger#constants
+     */
+    const MESSAGE_LEVELS = [
+        'error' => Logger::LEVEL_ERROR,
+        'info' => Logger::LEVEL_INFO,
+        'trace' => Logger::LEVEL_TRACE,
+        'profile' => Logger::LEVEL_PROFILE,
+        'profileBegin' => Logger::LEVEL_PROFILE_BEGIN,
+        'profileEnd' => Logger::LEVEL_PROFILE_END,
+    ];
+
     // Static Properties
     // =========================================================================
 
@@ -19,15 +36,13 @@ class LogToFile
     /**
      * @var bool
      */
-    public static $logUserIp = false;
+    public static $logToCraft = true;
 
     /**
      * @var bool
+     * @deprecated in 1.1.0
      */
-    public static $logToCraft = false;
-
-    // Static Methods
-    // =========================================================================
+    public static $logUserIp = false;
 
     /**
      * Logs an info message to a file with the provided handle.
@@ -72,19 +87,19 @@ class LogToFile
 
         $file = Craft::getAlias('@storage/logs/'.$handle.'.log');
 
+        // Set IP address
+        $ip = '';
+
+        if (Craft::$app->getConfig()->getGeneral()->storeUserIps) {
+            $ip = Craft::$app->getRequest()->getUserIP();
+        }
+
         // Set user ID
         $userId = '';
         $user = Craft::$app->getUser()->getIdentity();
 
         if ($user !== null) {
             $userId = $user->id;
-        }
-
-        // Set IP address
-        $ip = '';
-
-        if (self::$logUserIp) {
-            $ip = Craft::$app->getRequest()->getUserIP();
         }
 
         // Trim message to remove whitespace and empty lines
@@ -100,6 +115,9 @@ class LogToFile
         }
 
         if (self::$logToCraft) {
+            // Convert level to a message level that the Yii logger might understand
+            $level = self::MESSAGE_LEVELS[$level] ?? $level;
+
             Craft::getLogger()->log($message, $level, $handle);
         }
     }

@@ -37,6 +37,9 @@ LogToFile::info($message, 'my-plugin-handle');
 // Log as error
 LogToFile::error($message, 'my-plugin-handle');
 
+// Log as Yii message level
+LogToFile::log($message, 'my-plugin-handle', 'error');
+
 // Log as custom category
 LogToFile::log($message, 'my-plugin-handle', 'custom-category');
 ```

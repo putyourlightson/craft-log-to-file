@@ -9,9 +9,6 @@ use yii\log\Logger;
 
 class LogToFile
 {
-    // Constants
-    // =========================================================================
-
     /**
      * Message levels
      * @see https://www.yiiframework.com/doc/api/2.0/yii-log-logger#constants
@@ -24,9 +21,6 @@ class LogToFile
         'profileBegin' => Logger::LEVEL_PROFILE_BEGIN,
         'profileEnd' => Logger::LEVEL_PROFILE_END,
     ];
-
-    // Static Properties
-    // =========================================================================
 
     /**
      * @var string
@@ -43,24 +37,28 @@ class LogToFile
      * @deprecated in 1.1.0
      */
     public static $logUserIp = false;
-    
+
     /**
      * @var bool
+     * @since 1.2.0
      */
     public static $enableRotation = true;
-    
+
     /**
      * @var int
+     * @since 1.2.0
      */
     public static $maxFileSize = 1024;
 
     /**
      * @var int
+     * @since 1.2.0
      */
     public static $maxLogFiles = 20;
 
     /**
      * @var bool
+     * @since 1.2.0
      */
     public static $rotateByCopy = true;
 
@@ -105,9 +103,9 @@ class LogToFile
             return;
         }
 
+        // Clear stat cache to ensure getting the real current file size and not a cached one.
+        // This may result in rotating twice when cached file size is used on subsequent calls.
         if (self::$enableRotation) {
-            // clear stat cache to ensure getting the real current file size and not a cached one
-            // this may result in rotating twice when cached file size is used on subsequent calls
             clearstatcache();
         }
 
@@ -157,9 +155,6 @@ class LogToFile
         }
     }
 
-    // Private Static Functions
-    // =========================================================================
-
     private static function rotateFiles($file)
     {
         for ($i = self::$maxLogFiles; $i >= 0; --$i) {
@@ -167,7 +162,7 @@ class LogToFile
             $rotateFile = $file . ($i === 0 ? '' : '.' . $i);
 
             if (is_file($rotateFile)) {
-                // suppress errors because it's possible multiple processes enter into this section
+                // Suppress errors because it's possible multiple processes enter into this section.
                 if ($i === self::$maxLogFiles) {
                     @unlink($rotateFile);
                     continue;
@@ -175,7 +170,7 @@ class LogToFile
 
                 $newFile = $file . '.' . ($i + 1);
                 self::$rotateByCopy ? self::rotateByCopy($rotateFile, $newFile) : self::rotateByRename($rotateFile, $newFile);
-                
+
                 if ($i === 0) {
                     self::clearLogFile($rotateFile);
                 }

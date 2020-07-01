@@ -1,5 +1,10 @@
 # Log To File Helper Changelog
 
+## 1.2.1 - 2020-07-01
+### Changed
+- Changed the max file size to 10MB.
+- Changed the max log files to 5.
+
 ## 1.2.0 - 2020-07-01
 ### Added
 - Added log file rotation.

@@ -48,13 +48,13 @@ class LogToFile
      * @var int
      * @since 1.2.0
      */
-    public static $maxFileSize = 1024;
+    public static $maxFileSize = 10240; // in KB
 
     /**
      * @var int
      * @since 1.2.0
      */
-    public static $maxLogFiles = 20;
+    public static $maxLogFiles = 5;
 
     /**
      * @var bool

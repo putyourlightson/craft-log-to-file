@@ -43,6 +43,26 @@ class LogToFile
      * @deprecated in 1.1.0
      */
     public static $logUserIp = false;
+    
+    /**
+     * @var bool
+     */
+    public static $enableRotation = true;
+    
+    /**
+     * @var int
+     */
+    public static $maxFileSize = 1024;
+
+    /**
+     * @var int
+     */
+    public static $maxLogFiles = 20;
+
+    /**
+     * @var bool
+     */
+    public static $rotateByCopy = true;
 
     /**
      * Logs an info message to a file with the provided handle.
@@ -85,7 +105,13 @@ class LogToFile
             return;
         }
 
-        $file = Craft::getAlias('@storage/logs/'.$handle.'.log');
+        if (self::$enableRotation) {
+            // clear stat cache to ensure getting the real current file size and not a cached one
+            // this may result in rotating twice when cached file size is used on subsequent calls
+            clearstatcache();
+        }
+
+        $file = Craft::getAlias('@storage/logs/' . $handle . '.log');
 
         // Set IP address
         $ip = '';
@@ -105,13 +131,17 @@ class LogToFile
         // Trim message to remove whitespace and empty lines
         $message = trim($message);
 
-        $log = date('Y-m-d H:i:s').' ['.$ip.']['.$userId.']['.$level.'] '.$message."\n";
+        $log = date('Y-m-d H:i:s') . ' [' . $ip . '][' . $userId . '][' . $level . '] ' . $message . "\n";
+
+        if (self::$enableRotation && @filesize($file) > self::$maxFileSize * 1024) {
+            self::rotateFiles($file);
+        }
 
         try {
             FileHelper::writeToFile($file, $log, ['append' => true]);
         }
         catch (ErrorException $e) {
-            Craft::warning('Failed to write log to file `'.$file.'`.');
+            Craft::warning('Failed to write log to file `' . $file . '`.');
         }
 
         // Only log if debug toolbar is not enabled, otherwise this will break it.
@@ -125,5 +155,49 @@ class LogToFile
 
             Craft::getLogger()->log($message, $level, $handle);
         }
+    }
+
+    // Private Static Functions
+    // =========================================================================
+
+    private static function rotateFiles($file)
+    {
+        for ($i = self::$maxLogFiles; $i >= 0; --$i) {
+            // $i == 0 is the original log file
+            $rotateFile = $file . ($i === 0 ? '' : '.' . $i);
+
+            if (is_file($rotateFile)) {
+                // suppress errors because it's possible multiple processes enter into this section
+                if ($i === self::$maxLogFiles) {
+                    @unlink($rotateFile);
+                    continue;
+                }
+
+                $newFile = $file . '.' . ($i + 1);
+                self::$rotateByCopy ? self::rotateByCopy($rotateFile, $newFile) : self::rotateByRename($rotateFile, $newFile);
+                
+                if ($i === 0) {
+                    self::clearLogFile($rotateFile);
+                }
+            }
+        }
+    }
+
+    private static function clearLogFile($rotateFile)
+    {
+        if ($filePointer = @fopen($rotateFile, 'a')) {
+            @ftruncate($filePointer, 0);
+            @fclose($filePointer);
+        }
+    }
+
+    private static function rotateByCopy($rotateFile, $newFile)
+    {
+        @copy($rotateFile, $newFile);
+    }
+
+    private static function rotateByRename($rotateFile, $newFile)
+    {
+        @rename($rotateFile, $newFile);
     }
 }

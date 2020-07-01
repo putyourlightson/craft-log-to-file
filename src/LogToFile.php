@@ -114,7 +114,12 @@ class LogToFile
             Craft::warning('Failed to write log to file `'.$file.'`.');
         }
 
-        if (self::$logToCraft) {
+        // Only log if debug toolbar is not enabled, otherwise this will break it.
+        // https://github.com/putyourlightson/craft-blitz/issues/233
+        $user = Craft::$app->getUser()->getIdentity();
+        $debugToolbarEnabled = $user ? $user->getPreference('enableDebugToolbarForSite') : false;
+
+        if (self::$logToCraft && !$debugToolbarEnabled) {
             // Convert level to a message level that the Yii logger might understand
             $level = self::MESSAGE_LEVELS[$level] ?? $level;
 

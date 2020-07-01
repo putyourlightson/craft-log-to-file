@@ -1,5 +1,9 @@
 # Log To File Helper Changelog
 
+## 1.1.1 - 2020-07-01
+### Fixed
+- Fixed a bug that was preventing the debug toolbar from loading when messages were logged to Craft ([#233](https://github.com/putyourlightson/craft-blitz/issues/233)).
+
 ## 1.1.0 - 2019-10-09
 ### Changed
 - The message level is now converted to one that the Yii logger (maybe) understands.

@@ -1,5 +1,9 @@
 # Log To File Helper Changelog
 
+## 1.2.2 - 2020-08-22
+### Fixed 
+- Fixed an error that could occur when the logging during a console request ([#4](https://github.com/putyourlightson/craft-log-to-file/issues/4)).
+
 ## 1.2.1 - 2020-07-01
 ### Changed
 - Changed the max file size to 10MB.

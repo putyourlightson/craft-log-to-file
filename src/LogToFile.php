@@ -114,7 +114,7 @@ class LogToFile
         // Set IP address
         $ip = '';
 
-        if (Craft::$app->getConfig()->getGeneral()->storeUserIps) {
+        if (Craft::$app->getConfig()->getGeneral()->storeUserIps && !Craft::$app->getRequest()->isConsoleRequest) {
             $ip = Craft::$app->getRequest()->getUserIP();
         }
 

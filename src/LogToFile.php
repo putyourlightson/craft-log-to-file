@@ -5,6 +5,7 @@ namespace putyourlightson\logtofile;
 use Craft;
 use craft\helpers\FileHelper;
 use yii\base\ErrorException;
+use yii\db\Exception;
 use yii\log\Logger;
 
 class LogToFile
@@ -141,8 +142,12 @@ class LogToFile
         catch (ErrorException $e) {
             Craft::warning('Failed to write log to file `' . $file . '`.');
         }
+        // Catch DB exceptions in case the DB cannot be queried for a mutex lock
+        catch (Exception $e) {
+            Craft::warning('Failed to write log to file `' . $file . '`.');
+        }
 
-        // Only log if debug toolbar is not enabled, otherwise this will break it.
+        // Only log to Craft if debug toolbar is not enabled, otherwise this will break it
         // https://github.com/putyourlightson/craft-blitz/issues/233
         $user = Craft::$app->getUser()->getIdentity();
         $debugToolbarEnabled = $user ? $user->getPreference('enableDebugToolbarForSite') : false;

@@ -14,7 +14,7 @@ class LogToFile
      * Message levels
      * @see https://www.yiiframework.com/doc/api/2.0/yii-log-logger#constants
      */
-    const MESSAGE_LEVELS = [
+    public const MESSAGE_LEVELS = [
         'error' => Logger::LEVEL_ERROR,
         'info' => Logger::LEVEL_INFO,
         'trace' => Logger::LEVEL_TRACE,
@@ -24,61 +24,49 @@ class LogToFile
     ];
 
     /**
-     * @var string
+     * @var string The default handle to use when writing to a file.
      */
-    public static $handle = '';
+    public static string $handle = '';
 
     /**
-     * @var bool
+     * @var bool Whether the log to be sent to the Craft logger.
      */
-    public static $logToCraft = true;
+    public static bool $logToCraft = true;
 
     /**
-     * @var bool
-     * @deprecated in 1.1.0
-     */
-    public static $logUserIp = false;
-
-    /**
-     * @var bool
+     * @var bool Whether the logs should be rotated.
      * @since 1.2.0
      */
-    public static $enableRotation = true;
+    public static bool $enableRotation = true;
 
     /**
-     * @var int
+     * @var int The maximum file size in KB, before a log file is rotated.
      * @since 1.2.0
      */
-    public static $maxFileSize = 10240; // in KB
+    public static int $maxFileSize = 10240;
 
     /**
-     * @var int
+     * @var int The maximum number of log files to keep.
      * @since 1.2.0
      */
-    public static $maxLogFiles = 5;
+    public static int $maxLogFiles = 5;
 
     /**
-     * @var bool
+     * @var bool Whether to rotate logs by copying the file.
      * @since 1.2.0
      */
-    public static $rotateByCopy = true;
+    public static bool $rotateByCopy = true;
 
     /**
      * Logs an info message to a file with the provided handle.
-     *
-     * @param string $message
-     * @param string|null $handle
      */
     public static function info(string $message, string $handle = null)
     {
-        self::log($message, $handle, 'info');
+        self::log($message, $handle);
     }
 
     /**
      * Logs an error message to a file with the provided handle.
-     *
-     * @param string $message
-     * @param string|null $handle
      */
     public static function error(string $message, string $handle = null)
     {
@@ -87,10 +75,6 @@ class LogToFile
 
     /**
      * Logs the message to a file with the provided handle and level.
-     *
-     * @param string $message
-     * @param string|null $handle
-     * @param string $level
      */
     public static function log(string $message, string $handle = null, string $level = 'info')
     {
@@ -139,11 +123,8 @@ class LogToFile
         try {
             FileHelper::writeToFile($file, $log, ['append' => true]);
         }
-        catch (ErrorException $e) {
-            Craft::warning('Failed to write log to file `' . $file . '`.');
-        }
         // Catch DB exceptions in case the DB cannot be queried for a mutex lock
-        catch (Exception $e) {
+        catch (ErrorException|Exception) {
             Craft::warning('Failed to write log to file `' . $file . '`.');
         }
 

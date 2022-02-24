@@ -1,5 +1,9 @@
 # Log To File Helper Changelog
 
+## 2.0.0 - Unreleased
+### Added 
+- Added compatibility with Craft 4.
+
 ## 1.2.3 - 2020-08-24
 ### Changed 
 - Database exceptions are now caught in case the DB cannot be queried for a mutex lock.

@@ -1,4 +1,4 @@
-# Log To File Helper for Craft CMS 3
+# Log To File Helper for Craft CMS
 
 The Log To File helper provides a simple way for logging messages to a specific file. It is intended to be used a helper class for modules and plugins in [Craft CMS](https://craftcms.com/).
 
@@ -18,7 +18,7 @@ Or add it as a dependency to your plugin:
 
 ```
 "require": {
-    "putyourlightson/craft-log-to-file": "^1.0.0"
+    "putyourlightson/craft-log-to-file": "^1.0.0|^2.0.0"
 },
 ```
 Then you can write messages to a log file as follows.

@@ -1,7 +1,7 @@
 {
     "name": "putyourlightson/craft-log-to-file",
-    "description": "Logs messages to a specific log file for Craft CMS.",
-    "version": "2.0.0-alpha",
+    "description": "Logs messages to a specific log file.",
+    "version": "2.0.0-alpha.1",
     "homepage": "https://github.com/putyourlightson/craft-log-to-file",
     "license": "MIT",
     "keywords": [

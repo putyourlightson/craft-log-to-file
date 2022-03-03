@@ -1,6 +1,6 @@
 # Log To File Helper Changelog
 
-## 2.0.0 - Unreleased
+## 2.0.0-alpha.1 - 2022-03-03
 ### Added 
 - Added compatibility with Craft 4.
 

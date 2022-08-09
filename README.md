@@ -4,55 +4,7 @@ The Log To File helper provides a simple way for logging messages to a specific 
 
 ## Craft 4 Support
 
-This package will _not_ be updated for use with Craft 4. Instead, we recommend you use a custom log target as follows.
-
-
-```php
-use Craft;
-use craft\base\Plugin;
-use craft\log\MonologTarget;
-use Monolog\Formatter\LineFormatter;
-use Psr\Log\LogLevel;
-use yii\log\Logger;
-
-class MyPlugin extends Plugin
-{
-    public function init(): void
-    {
-        parent::init();
-        
-        $this->_registerLogTarget();
-    }
-
-    /**
-     * Logs a message
-     */
-    public function log(string $message, int $type = Logger::LEVEL_INFO): void
-    {
-        Craft::getLogger()->log($message, $type, 'my-plugin-handle');
-    }
-    
-    /**
-     * Registers a custom log target, keeping the format as simple as possible.
-     *
-     * @see LineFormatter::SIMPLE_FORMAT
-     */
-    private function _registerLogTarget(): void
-    {
-        Craft::getLogger()->dispatcher->targets[] = new MonologTarget([
-            'name' => 'my-plugin-handle',
-            'categories' => ['my-plugin-handle'],
-            'level' => LogLevel::INFO,
-            'logContext' => false,
-            'allowLineBreaks' => false,
-            'formatter' => new LineFormatter(
-                format: "[%datetime%] %message%\n",
-                dateFormat: 'Y-m-d H:i:s',
-            ),
-        ]);
-    }
-}
-```
+This package will _not_ be updated for use with Craft 4. Instead, we recommend you use a custom Monolog log target to achieve a similar (better) result, as explained in https://putyourlightson.com/articles/adding-logging-to-craft-plugins-with-monolog
 
 ## Requirements
 
